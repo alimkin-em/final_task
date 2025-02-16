@@ -15,10 +15,15 @@ export class List extends Component {
     this.$rootElement.append($h2, $div)
 
     this.$listContainer = $div
+
     // ...
   }
 
   addItem(item) {
     this.$listContainer.appendChild(item.$rootElement)
+  }
+
+  deleteItem(item) {
+    item.remove()
   }
 }

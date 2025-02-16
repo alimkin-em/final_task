@@ -17,6 +17,7 @@ export class Form extends Component {
 
     const $input = document.createElement('input')
     $input.className = 'donate-form__donate-input'
+    $input.type = 'number'
 
     const $button = document.createElement('button')
     $button.className = 'donate-form__submit-button'
@@ -34,7 +35,7 @@ export class Form extends Component {
   }
 
   handleInput(event) {
-    this.state.amount = Number(event.target.value)
+    this.state.amount = event.target.value
     if (!this.isValid) {
       this.$button.setAttribute('disabled', '')
     } else {
@@ -52,14 +53,6 @@ export class Form extends Component {
   }
 
   get isValid() {
-    if (
-      !Number.isNaN(this.state.amount) &&
-      this.state.amount > 0 &&
-      this.state.amount <= 100
-    ) {
-      return true
-    } else {
-      return false
-    }
+    return this.state.amount > 0 && this.state.amount <= 100
   }
 }

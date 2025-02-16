@@ -27,19 +27,29 @@ export class App extends Component {
     const $donateForm = new Form({ onSubmit: this.onItemCreate.bind(this) })
     this.$rootElement.appendChild($donateForm.$rootElement)
 
-    const $donateList = new List()
-    this.$rootElement.appendChild($donateList.$rootElement)
-    this.donateList = $donateList
+    this.$donateList = new List()
+    this.$rootElement.appendChild(this.$donateList.$rootElement)
   }
 
   onItemCreate(amount) {
-    const item = new ListItem({ amount })
+    const item = new ListItem({
+      amount,
+      onDelete: this.onItemDelete.bind(this),
+    })
+    this.state.total += Number(amount)
     this.state.donates.push(item)
-    this.donateList.addItem(item)
-    this.state.total += amount
-    this.$total.textContent = `${this.state.total}`
+    this.$donateList.addItem(item)
+    this.$total.textContent = this.state.total
     // ...
   }
 
-  onItemDelete(id) {}
+  onItemDelete(id) {
+    const itemIndex = this.state.donates.findIndex(
+      (item) => item.state.id == id
+    )
+    this.$total.textContent = this.state.total -= Number(
+      this.state.donates[itemIndex].state.amount
+    )
+    this.state.donates.splice(itemIndex, 1)
+  }
 }

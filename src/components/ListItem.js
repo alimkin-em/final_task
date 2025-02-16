@@ -4,19 +4,22 @@ export class ListItem extends Component {
   setup(props) {
     this.state = {
       id: Date.now(),
-      date: new Date().toLocaleDateString('ru-RU', {
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric',
-      }),
+      date: new Date().toLocaleString('ru-RU'),
       amount: props.amount,
     }
     this.$rootElement = document.createElement('div')
     this.$rootElement.className = 'donate-item'
-    this.$rootElement.textContent = `${this.state.date} - `
+    this.$rootElement.innerHTML = `${this.state.date} -&nbsp<b>$${this.state.amount}</b>`
 
-    const $b = document.createElement('b')
-    $b.textContent = ' ' + `$${this.state.amount}`
-    this.$rootElement.append($b)
+    const $button = document.createElement('button')
+    $button.className = 'delete-button'
+    $button.textContent = 'Удалить'
+    $button.addEventListener('click', this.handleDelete.bind(this))
+    this.$rootElement.append($button)
+  }
+
+  handleDelete() {
+    this.props.onDelete(this.state.id)
+    this.$rootElement.remove()
   }
 }
